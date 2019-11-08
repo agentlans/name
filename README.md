@@ -10,19 +10,21 @@ Need C++ compiler and `make`.
 ## Use
 
 Inputs:
-- keywords file (one line for each keyword describing your product)
+- keywords file (one line for each keyword describing your product). Try to include words that start with vowels or other common English letters like T, N, S, H, R, D, L.
 - (optional) dictionary file containing meaningful words that can be used as acronyms.
   If this file isn't provided, then the program will use `google-10000-english.txt` file by default.
 
 Run:
 
-This runs the program on `keywords.txt` file and saves the results to a file called `Results.md`. May take a few minutes.
+This runs the program on `keywords.txt` and saves the results to `Results.md`. May take a few minutes.
 ```bash
 ./name keywords.txt google-10000-english.txt > Results.md
 ```
 
 Output:
-Output is in Markdown format. File contains possible acronyms and keywords that match the letters in the acronym.
+
+Output is in Markdown format and contains possible acronyms and keywords that match the letters in the acronym.
+
 Example:
 ```
 ## PAGE
