@@ -2,22 +2,26 @@
 Generates acronyms and abbreviations based on your keywords
 
 ## Install
-Need C++ compiler and `make`. Just download this repository and run `make`. An executable file called `name` will be created in directory.
+Need C++ compiler and `make`.
+
+1. Download this repository and run `make`.
+2. An executable file called `name` will be created in the directory.
 
 ## Use
 
-### Inputs
+Inputs:
 - keywords file (one line for each keyword describing your product)
 - (optional) dictionary file containing meaningful words that can be used as acronyms.
   If this file isn't provided, then the program will use `google-10000-english.txt` file by default.
 
-### Run
-This runs the program and saves the results to a file called `Results.md`. May take a few minutes.
+Run:
+
+This runs the program on `keywords.txt` file and saves the results to a file called `Results.md`. May take a few minutes.
 ```bash
 ./name keywords.txt google-10000-english.txt > Results.md
 ```
 
-### Output
+Output:
 Output is in Markdown format. File contains possible acronyms and keywords that match the letters in the acronym.
 Example:
 ```
@@ -35,8 +39,9 @@ Example:
 - Electronic, Epithet, Execution
 ```
 
-## Author, license
+## Author, license, acknowledgements
 Copyright (C) 2019 Alan Tseng
 
 License: GPL v3
 
+google-10000-english.txt file is from https://github.com/first20hours/google-10000-english
