@@ -62,19 +62,43 @@ std::string capitalize(std::string x, int num_letters) {
 	return x;
 }
 
-// Returns vector of words in word_list that have the given prefix.
-// Assumes word_list is sorted.
-std::vector<std::string> look_up(std::string prefix, const std::vector<std::string> word_list) {
-	int pl = prefix.size();
-	std::vector<std::string> matches;
-	for (const auto &word : word_list) {
-		if (word.substr(0, pl) == prefix) {
-			matches.push_back(capitalize(word, pl));
-			continue;
-		}
-		if (word.substr(0, pl) > prefix) break;
-	}
-	return matches;
+
+// Compares strings by their first few letters
+class Comparator
+{
+public:
+	Comparator(int len);
+	bool compare(const std::string &a, const std::string &b);
+private:
+	int prefix_length;
+};
+
+Comparator::Comparator(int len)
+{
+	prefix_length = len;
+}
+
+bool Comparator::compare(const std::string &a, const std::string &b)
+{
+	return a.substr(0, prefix_length) < b.substr(0, prefix_length);
+}
+
+// Returns subset of words from word_list that matches prefix.
+// word_list must be sorted first!
+std::vector<std::string> look_up(std::string prefix, const std::vector<std::string> &word_list)
+{
+	Comparator c(prefix.size());
+	auto c2 = [&](const auto &a, const auto &b) {
+		return c.compare(a, b);
+	};
+	// Find words whose prefixes match given prefix
+	auto p = std::equal_range(
+		word_list.begin(), word_list.end(), prefix, c2);
+
+	// Copy matching words
+	std::vector<std::string> temp(p.second - p.first);
+	std::copy(p.first, p.second, temp.begin());
+	return temp;
 }
 
 // Exception we throw when we can't expand acronym with splitted words
@@ -96,6 +120,12 @@ expand_parts(std::vector<std::string> parts, const std::vector<std::string> &wor
 		if (possible_words.size() == 0) {
 			throw CantExpandException();
 		}
+		// Capitalize the words
+		int ps = part.size();
+		std::transform(possible_words.begin(), possible_words.end(), possible_words.begin(),
+			[&](std::string x) {
+				return capitalize(x, ps);
+			});
 		result.push_back(possible_words);
 	}
 	return result;
@@ -190,7 +220,7 @@ int main(int argc, char* argv[])
 			dict_file = argv[2];
 			break;
 		default:
-			std::cout << "Usage: csign keyword_file [dictionary_file]" << std::endl;
+			std::cout << "Usage: ./name keyword_file [dictionary_file]" << std::endl;
 			exit(1);
 	}
 
